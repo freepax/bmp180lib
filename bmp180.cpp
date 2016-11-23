@@ -10,10 +10,23 @@
 #include "bmp180.h"
 
 
-/// ctor
+/**
+ * @brief Bmp180::Bmp180
+ *
+ * ctor
+ *
+ * @param device                    i2c device to use (eg. /dev/i2c-x)
+ * @param address                   i2c buss address
+ */
 Bmp180::Bmp180(char *device, unsigned char address) : Firmware_I2C(device, address) { }
 
-
+/**
+ * @brief Bmp180::openDevice
+ *
+ * open i2c buss (eg. file descriptor to the i2c driver)
+ *
+ * @return                          zero on success, negative error value on failure
+ */
 int Bmp180::openDevice()
 {
     /// openDevice in firmware_i2c open's the i2c device and set's the slave address (ioctl)
@@ -79,7 +92,13 @@ int Bmp180::openDevice()
     return 0;
 }
 
-
+/**
+ * @brief Bmp180::readChipId
+ *
+ * read the chip id
+ *
+ * @return                          zero on success, negative error value on failure
+ */
 int Bmp180::readChipId()
 {
     /// write chip ID chip-address
@@ -99,12 +118,14 @@ int Bmp180::readChipId()
     return buffer[0];
 }
 
-
-/** read temperature from the bmp180 pressure sensor
+/**
+ * @brief Bmp180::readTemperature
  *
- * @pascal: The measured temerature goes here
+ * read temperature from the bmp180 pressure sensor
  *
- * @return: 0 on success, negative on failure
+ * @param temperature               The measured temerature goes here
+ *
+ * @return                          zero on success, negative error value on failure
  */
 int Bmp180::readTemperature(float *temperature)
 {
@@ -117,7 +138,13 @@ int Bmp180::readTemperature(float *temperature)
     return 0;
 }
 
-
+/**
+ * @brief Bmp180::readTemperature
+ *
+ * read chip temperature
+ *
+ * @return                          zero on success, negative error value on failure
+ */
 int Bmp180::readTemperature()
 {
     /// setup for temperature measurement
@@ -161,15 +188,16 @@ int Bmp180::readTemperature()
     return 0;
 }
 
-
-/** read pressure from the bmp180 pressure sensor
+/**
+ * @brief Bmp180::readPressure
  *
- * @pascal: converted pressure array
- * @oss: OverSamplingSetting (1, 2, 4 or 8 oversamples - delay: 4.5ms, 7.5ms, 13.5ms and 25.5ms)
- * @samples: numbers of samples to read (into pascal[])
- * @update_temperature: wheter to update temperature reading or not (say yes to this if current reading is older than 1 sec.)
+ * read pressure from the bmp180 pressure sensor
  *
- * @return: 0 on success, negative on failure
+ * @param pascal                    converted pressure array
+ * @param oss                       OverSamplingSetting (1, 2, 4 or 8 oversamples - delay: 4.5ms, 7.5ms, 13.5ms and 25.5ms)
+ * @param samples                   numbers of samples to read (into pascal[])
+ * @param update_temperature        wheter to update temperature reading or not (say yes to this if current reading is older than 1 sec.)
+ * @return                          zero on success, negative error value on failure
  */
 int Bmp180::readPressure(long pascal[], int oss, int samples, bool update_temperature)
 {
@@ -189,7 +217,16 @@ int Bmp180::readPressure(long pascal[], int oss, int samples, bool update_temper
     return 0;
 }
 
-
+/**
+ * @brief Bmp180::readPressure
+ *
+ * read pressure from sensor
+ *
+ * @param oss                       OverSamplingSetting (1, 2, 4 or 8 oversamples - delay: 4.5ms, 7.5ms, 13.5ms and 25.5ms)
+ * @param update_temperature        read temperature if requested (If old temp measurement is older that 1 sec. do a new temp reading)
+ *
+ * @return                          zero on success, negative error value on failure
+ */
 int Bmp180::readPressure(int oss, bool update_temperature)
 {
     /// make sure requested oss is reasonable
@@ -305,11 +342,17 @@ int Bmp180::readPressure(int oss, bool update_temperature)
     return 0;
 }
 
-
-/// NONE MEMBER FUNCTION
-
-/// calculate altitude from give pressure at location and pressure at sea level
-/// (international barometric formula)
+/**
+ * @brief altitude
+ *
+ *  calculate altitude from give pressure at location and pressure at sea level
+ * (international barometric formula)
+ *
+ * @param pa                        measured pressure
+ * @param p0                        pressure at sea level
+ *
+ * @return                          calculated altitude
+ */
 double altitude(long pa, long p0)
 {
     int Talkative = 0;
@@ -337,9 +380,16 @@ double altitude(long pa, long p0)
     return altitude;
 }
 
-
-/// If you know your altitude then p0 (pressure at sea level)
-/// can be calculated using the measured pressure.
+/**
+ * @brief pressure_at_sea
+ *
+ * If altitude at location is known then p0 may be calculated
+ *
+ * @param p                         measured pressure at location
+ * @param altitude                  altitude at location
+ *
+ * @return                          pressure at sea level at location
+ */
 double pressure_at_sea(long p, double altitude)
 {
     return p / pow((1.0 - (altitude / 44330.0)), 5.255);

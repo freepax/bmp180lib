@@ -9,7 +9,6 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
-/// firmware_i2c 
 #include "firmware_i2c.h"
 
 /**
