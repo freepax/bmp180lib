@@ -25,3 +25,5 @@ set_target_properties(bmp180 PROPERTIES
   VERSION 1.0.0
   SOVERSION 1
 )
+
+install(TARGETS bmp180 DESTINATION lib)
