@@ -20,6 +20,7 @@
  */
 Bmp180::Bmp180(char *device, unsigned char address) : Firmware_I2C(device, address) { }
 
+
 /**
  * @brief Bmp180::openDevice
  *
@@ -52,7 +53,6 @@ int Bmp180::openDevice()
 
     /// sanity check - no word should be 0xffff or 0x0000
     for (int i = 0; i < 22; i += 2) {
-
         /// shift in to 16 bit words and check
         short temp = ((buffer[i] & 0x00ff) << 8 | (buffer[i+1] & 0x00ff));
         if (temp == 0x0000 || temp == 0xffff) {
@@ -92,6 +92,7 @@ int Bmp180::openDevice()
     return 0;
 }
 
+
 /**
  * @brief Bmp180::readChipId
  *
@@ -118,6 +119,7 @@ int Bmp180::readChipId()
     return buffer[0];
 }
 
+
 /**
  * @brief Bmp180::readTemperature
  *
@@ -134,9 +136,11 @@ int Bmp180::readTemperature(float *temperature)
         return -1;
     }
 
-    *temperature = ((mCalc.b5 + 8) >> 4) / 10.0;  /* temperature in deg C*/
+    /// temperature in deg Celsius
+    *temperature = ((mCalc.b5 + 8) >> 4) / 10.0;
     return 0;
 }
+
 
 /**
  * @brief Bmp180::readTemperature
@@ -188,6 +192,7 @@ int Bmp180::readTemperature()
     return 0;
 }
 
+
 /**
  * @brief Bmp180::readPressure
  *
@@ -202,20 +207,16 @@ int Bmp180::readTemperature()
 int Bmp180::readPressure(long pascal[], int oss, int samples, bool update_temperature)
 {
     for (int i = 0; i < samples; i++) {
-        //struct timeval  tv1, tv2;
-        //gettimeofday(&tv1, NULL);
         if (readPressure(oss, update_temperature) < 0) {
             std::cerr << "Bmp180::" << __func__ << ":" << __LINE__ << " readPressure failed" << std::endl;
             return -1;
         }
-        //gettimeofday(&tv2, NULL);
-        //printf ("Total time = %f seconds\n", (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 + (double) (tv2.tv_sec - tv1.tv_sec));
-
         pascal[i] = mCalc.p;
     }
 
     return 0;
 }
+
 
 /**
  * @brief Bmp180::readPressure
@@ -342,6 +343,7 @@ int Bmp180::readPressure(int oss, bool update_temperature)
     return 0;
 }
 
+
 /**
  * @brief altitude
  *
@@ -379,6 +381,7 @@ double altitude(long pa, long p0)
 
     return altitude;
 }
+
 
 /**
  * @brief pressure_at_sea

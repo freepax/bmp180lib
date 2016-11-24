@@ -11,6 +11,7 @@
 
 #include "firmware_i2c.h"
 
+
 /**
  * @brief Firmware_I2C::Firmware_I2C
  *
@@ -21,6 +22,7 @@
  * @param debug                     turn debug on or off
  */
 Firmware_I2C::Firmware_I2C(char *device, unsigned char address, bool debug) : mFd(-1), mDevice(device), mAddress(address), mDebug(debug) { }
+
 
 /**
  * @brief Firmware_I2C::~Firmware_I2C
@@ -35,6 +37,7 @@ Firmware_I2C::~Firmware_I2C()
 
     closeDevice();
 }
+
 
 /**
  * @brief Firmware_I2C::openDevice
@@ -74,6 +77,7 @@ int Firmware_I2C::openDevice()
     return 0;
 }
 
+
 /**
  * @brief Firmware_I2C::writeData
  *
@@ -95,6 +99,7 @@ int Firmware_I2C::writeData(unsigned char *data, int size)
 
     return 0;
 }
+
 
 /**
  * @brief Firmware_I2C::readData
@@ -118,6 +123,7 @@ int Firmware_I2C::readData(unsigned char *data, int size)
     return 0;
 }
 
+
 /**
  * @brief Firmware_I2C::closeDevice
  *
@@ -135,6 +141,7 @@ int Firmware_I2C::closeDevice()
 
     return 0;
 }
+
 
 /**
  * @brief Firmware_I2C::setDevice
