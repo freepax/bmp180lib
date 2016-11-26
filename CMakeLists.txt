@@ -27,3 +27,4 @@ set_target_properties(bmp180 PROPERTIES
 )
 
 install(TARGETS bmp180 DESTINATION lib)
+install(FILES ${BMP180_HEADERS} DESTINATION include)
