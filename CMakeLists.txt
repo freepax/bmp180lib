@@ -15,7 +15,6 @@ set(BMP180_SOURCE
 
 set(BMP180_HEADERS
   bmp180.h
-  firmware_i2c.h
 )
 
 add_library(bmp180 SHARED ${BMP180_SOURCE} ${BMP180_HEADERS})
