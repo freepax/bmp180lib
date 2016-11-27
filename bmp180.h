@@ -1,7 +1,7 @@
 #ifndef BMP180_H
 #define BMP180_H
 
-#include "firmware_i2c.h"
+#include <firmware_i2c.h>
 
 
 /// nominal pressure at sea level in Pa (not hPa)
